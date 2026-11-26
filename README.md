@@ -28,12 +28,12 @@ Logos and the knight come from the client pack.
 ## Products (edit in `assets/js/products.js`)
 | Product | Colour | Price | Images |
 |---|---|---|---|
-| Crown Logo Tee | Black | $35 | front, on model |
-| Knights Club Vintage Tee | Washed Purple | $42 | front, on model |
-| Live Like a Knight Oversized Tee | Bone | $39 (was $45) | back, on model |
-| Royal Crest Embroidered Hoodie | Royal Purple | $85 | front, on model |
-| Midnight Knight Zip Hoodie | Black | $95 | front, back, on model |
-| Crown Icon Snapback | Purple / Gold | $38 | front, on model |
+| Crown Logo Tee | Black | R$ 179,90 | front, on model |
+| Knights Club Vintage Tee | Washed Purple | R$ 219,90 | front, on model |
+| Live Like a Knight Oversized Tee | Bone | R$ 199,90 (was R$ 239,90) | back, on model |
+| Royal Crest Embroidered Hoodie | Royal Purple | R$ 449,90 | front, on model |
+| Midnight Knight Zip Hoodie | Black | R$ 499,90 | front, back, on model |
+| Crown Icon Snapback | Purple / Gold | R$ 199,90 | front, on model |
 
 Prices, stock per size, fabric weights and fit notes are placeholders to confirm with SBA and the print supplier.
 
@@ -51,6 +51,6 @@ Generated on Higgsfield, 26-27 Nov 2026. Originals (PNG, ~2K) in `raw/` (git-ign
   Shopify (Buy Button / Storefront API), Stripe Checkout or similar before taking orders.
 - No customer reviews or ratings on purpose: add real ones once there are buyers.
 - Footer social links point to `#`; swap in SBA's real profiles.
-- Prices are in USD (shown as US$ 35,00 in Portuguese). To sell in reais, set `currency: "BRL"` in `products.js` and
-  enter real-price amounts.
+- Prices are in reais (BRL) in both languages; free shipping from R$ 399, otherwise R$ 29,90. These are suggested
+  price points, not converted rates: confirm them with SBA.
 
