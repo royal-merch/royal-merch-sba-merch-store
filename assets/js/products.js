@@ -1,13 +1,17 @@
 /* Sir Betalot Official Store: product catalogue.
-   Edit prices, copy, sizes and stock here. Images live in assets/img/products/. */
+   Edit prices, copy, sizes and stock here. English text sits on each product, Portuguese (Brazil) in its `pt` block.
+   Images live in assets/img/products/. */
 window.SBA_STORE = {
   currency: "USD",
-  locale: "en-US",
   freeShippingFrom: 75,
+  flatShipping: 6,
   collections: [
-    { id: "tees", name: "Tees", blurb: "Heavyweight cotton, printed to last." },
-    { id: "hoodies", name: "Hoodies", blurb: "Brushed fleece built for cold nights." },
-    { id: "headwear", name: "Headwear", blurb: "Crown on. Every day." }
+    { id: "tees", name: "Tees", blurb: "Heavyweight cotton, printed to last.",
+      pt: { name: "Camisetas", blurb: "Algodão pesado, estampado para durar." } },
+    { id: "hoodies", name: "Hoodies", blurb: "Brushed fleece built for cold nights.",
+      pt: { name: "Moletons", blurb: "Moletom felpado, feito para as noites frias." } },
+    { id: "headwear", name: "Headwear", blurb: "Crown on. Every day.",
+      pt: { name: "Bonés", blurb: "Coroa na cabeça. Todo dia." } }
   ],
   products: [
     {
@@ -27,7 +31,19 @@ window.SBA_STORE = {
         "Regular fit, ribbed crew neck, double-needle hems",
         "Pre-shrunk"
       ],
-      fit: "Regular fit. True to size. Model is 185 cm and wears size L."
+      fit: "Regular fit. True to size. Model is 185 cm and wears size L.",
+      pt: {
+        name: "Camiseta Crown Logo",
+        color: "Preto",
+        short: "A original. Nosso logo completo com coroa em branco vivo e olhos verde-neon, numa camiseta preta de algodão pesado.",
+        details: [
+          "Algodão 100% penteado fio 30.1, 240 g/m²",
+          "Estampa em plastisol branco de toque macio, olhos em verde-neon",
+          "Modelagem regular, gola careca canelada, barras com costura dupla",
+          "Pré-encolhida"
+        ],
+        fit: "Modelagem regular. Veste no tamanho de sempre. O modelo tem 1,85 m e usa G."
+      }
     },
     {
       id: "knights-club-vintage-tee",
@@ -46,7 +62,19 @@ window.SBA_STORE = {
         "Boxy oversized fit with dropped shoulders",
         "Each tee has a slightly different wash"
       ],
-      fit: "Boxy, oversized fit. Take your usual size for a loose look, or size down for a closer fit. Model is 180 cm and wears size L."
+      fit: "Boxy, oversized fit. Take your usual size for a loose look, or size down for a closer fit. Model is 180 cm and wears size L.",
+      pt: {
+        name: "Camiseta Vintage Knights Club",
+        color: "Roxo Lavado",
+        short: "O próprio Sir Betalot numa estampa vintage craquelada, sobre camiseta roxa tingida peça a peça. Cada uma fica com uma lavagem um pouco diferente.",
+        details: [
+          "Algodão pesado de 260 g/m², tingido peça a peça e estonado",
+          "Estampa vintage craquelada com letreiro dourado em arco",
+          "Modelagem oversized quadrada com ombro caído",
+          "Cada camiseta tem uma lavagem levemente diferente"
+        ],
+        fit: "Modelagem oversized e quadrada. Use seu tamanho de sempre para um caimento solto, ou um número menor para ficar mais justa. O modelo tem 1,80 m e usa G."
+      }
     },
     {
       id: "live-like-a-knight-tee",
@@ -65,7 +93,19 @@ window.SBA_STORE = {
         "Boxy fit, dropped shoulders, wide ribbed collar",
         "Pre-shrunk"
       ],
-      fit: "Boxy, oversized fit. Model is 170 cm and wears size M."
+      fit: "Boxy, oversized fit. Model is 170 cm and wears size M.",
+      pt: {
+        name: "Camiseta Oversized Live Like a Knight",
+        color: "Off-white",
+        short: "Uma grande estampa de coroa e máscara nas costas, em roxo real, sobre uma camiseta oversized macia em tom off-white.",
+        details: [
+          "Algodão 100% de 250 g/m² em cru natural",
+          "Estampa grande nas costas em roxo profundo com olhos verde-neon",
+          "Modelagem quadrada, ombro caído, gola canelada larga",
+          "Pré-encolhida"
+        ],
+        fit: "Modelagem oversized e quadrada. A modelo tem 1,70 m e usa M."
+      }
     },
     {
       id: "royal-crest-hoodie",
@@ -84,7 +124,19 @@ window.SBA_STORE = {
         "Lined hood with gold-tipped drawcords",
         "Kangaroo pocket, ribbed cuffs and hem, woven gold hem label"
       ],
-      fit: "Relaxed fit. True to size. Model is 183 cm and wears size L."
+      fit: "Relaxed fit. True to size. Model is 183 cm and wears size L.",
+      pt: {
+        name: "Moletom Bordado Royal Crest",
+        color: "Roxo Real",
+        short: "Moletom em roxo real profundo, com coroa dourada em alto-relevo e olhos verde-neon bordados no peito.",
+        details: [
+          "Moletom de algodão flanelado por dentro, 420 g/m²",
+          "Bordado em alto-relevo dourado metálico e verde-neon",
+          "Capuz forrado com cordões de ponteira dourada",
+          "Bolso canguru, punhos e barra canelados, etiqueta dourada tecida na barra"
+        ],
+        fit: "Modelagem solta. Veste no tamanho de sempre. O modelo tem 1,83 m e usa G."
+      }
     },
     {
       id: "midnight-knight-zip-hoodie",
@@ -103,7 +155,19 @@ window.SBA_STORE = {
         "Full-back knight print",
         "Matte gold metal zip and aglets"
       ],
-      fit: "Relaxed fit. True to size. Model is 172 cm and wears size S."
+      fit: "Relaxed fit. True to size. Model is 172 cm and wears size S.",
+      pt: {
+        name: "Moletom com Zíper Midnight Knight",
+        color: "Preto",
+        short: "Patch de chenille com a coroa no peito e o cavaleiro inteiro nas costas. Nossa peça mais pesada.",
+        details: [
+          "Moletom de algodão pesado, 450 g/m²",
+          "Patch de chenille roxo e dourado com o logo no lado esquerdo do peito",
+          "Estampa do cavaleiro nas costas inteiras",
+          "Zíper e ponteiras em metal dourado fosco"
+        ],
+        fit: "Modelagem solta. Veste no tamanho de sempre. A modelo tem 1,72 m e usa P."
+      }
     },
     {
       id: "crown-icon-snapback",
@@ -122,7 +186,19 @@ window.SBA_STORE = {
         "Gold undervisor and top button",
         "Adjustable snap closure, one size fits most"
       ],
-      fit: "One size. Adjustable snap fits head sizes 55 to 61 cm."
+      fit: "One size. Adjustable snap fits head sizes 55 to 61 cm.",
+      pt: {
+        name: "Boné Snapback Crown Icon",
+        color: "Roxo / Dourado",
+        short: "Snapback estruturado de seis gomos, com coroa e máscara em bordado 3D, aba com forro dourado e botão dourado no topo.",
+        details: [
+          "Copa estruturada de seis gomos em sarja, aba reta",
+          "Bordado 3D em alto-relevo dourado metálico com olhos verde-neon",
+          "Forro da aba e botão do topo dourados",
+          "Fecho snap ajustável, tamanho único"
+        ],
+        fit: "Tamanho único. O fecho ajustável serve em cabeças de 55 a 61 cm."
+      }
     }
   ]
 };

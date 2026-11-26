@@ -5,7 +5,7 @@ Live: https://lucavandort-spec.github.io/sba-merch-store/ (GitHub Pages from `ma
 A static e-commerce store for SBA merch, laid out like a regular brand shop (shop.hardrock.com was the reference):
 announcement bar, sticky header, hero, category tiles, best sellers, a Knights Club feature, lookbook, newsletter,
 collection page with filters and sort, product pages with gallery, sizes, stock and size guide, and a cart drawer
-saved in the browser. Built 27 Nov 2026. No build step: plain HTML, CSS and JS, so it runs on GitHub Pages as is.
+saved in the browser. Portuguese (Brazil) by default, with a PT / EN toggle in the header (phones: next to the menu). Built 27 Nov 2026. No build step: plain HTML, CSS and JS, so it runs on GitHub Pages as is.
 
 ## Run it
 ```
@@ -18,6 +18,12 @@ Everything follows `client/SBA Assets/Brand Assets/Styles.pdf`: night purple #1F
 surfaces, gold #F5B301 accents, neon green #0FFF1F primary buttons (SBA site button style, You Blockhead Caps label in
 #2D1243), the 241036-581982 velvet gradient on the Knights Club panel. Headings in You Blockhead Caps, body in Rubik.
 Logos and the knight come from the client pack.
+
+## Languages
+- All interface text is in `assets/js/i18n.js` (`pt` and `en`). Product names, colours and copy are in
+  `assets/js/products.js`: English on each product, Portuguese in its `pt` block.
+- The choice is saved in the browser. A link can force it: `?lang=en` or `?lang=pt`.
+- In Portuguese, sizes show as P / M / G / GG / XGG and "Único".
 
 ## Products (edit in `assets/js/products.js`)
 | Product | Colour | Price | Images |
@@ -45,6 +51,6 @@ Generated on Higgsfield, 26-27 Nov 2026. Originals (PNG, ~2K) in `raw/` (git-ign
   Shopify (Buy Button / Storefront API), Stripe Checkout or similar before taking orders.
 - No customer reviews or ratings on purpose: add real ones once there are buyers.
 - Footer social links point to `#`; swap in SBA's real profiles.
-- Currency is USD and copy is English. For a Brazil storefront change `currency`/`locale` in `products.js` to
-  `BRL` / `pt-BR` and translate the copy.
+- Prices are in USD (shown as US$ 35,00 in Portuguese). To sell in reais, set `currency: "BRL"` in `products.js` and
+  enter real-price amounts.
 
