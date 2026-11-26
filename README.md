@@ -1,6 +1,6 @@
 # Sir Betalot Official Store (demo)
 
-Live: https://lucavandort-spec.github.io/sba-merch-store/ (GitHub Pages from `main`, root). Pushes to `main` redeploy it.
+Live: https://royal-merch.github.io/sba-merch-store/ (GitHub Pages from `main`, root). Pushes to `main` redeploy it.
 
 A static e-commerce store for SBA merch, laid out like a regular brand shop (shop.hardrock.com was the reference):
 announcement bar, sticky header, hero, category tiles, best sellers, a Knights Club feature, lookbook, newsletter,
