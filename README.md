@@ -3,9 +3,10 @@
 Live: https://royal-merch.github.io/royal-merch-sba-merch-store/ (GitHub Pages from `main`, root). Pushes to `main` redeploy it.
 
 A static e-commerce store for SBA merch, laid out like a regular brand shop (shop.hardrock.com was the reference):
-announcement bar, sticky header, hero, category tiles, best sellers, a Knights Club feature, lookbook, newsletter,
-collection page with filters and sort, product pages with gallery, sizes, stock and size guide, and a cart drawer
-saved in the browser. Portuguese (Brazil) by default, with a PT / EN toggle in the header (phones: next to the menu). Built 27 Nov 2026. No build step: plain HTML, CSS and JS, so it runs on GitHub Pages as is.
+announcement bar, sticky header, hero, category tiles, the full shop (all six products with category chips and size
+buttons on each card), a Knights Club feature, lookbook, newsletter, and a cart drawer saved in the browser.
+One page only: `index.html` (the separate shop and product pages were removed 27 Nov 2026). In-page links:
+`#shop`, `#tees` / `#hoodies` / `#headwear` (filter the shop), `#p-<product-id>` (jump to a product), `#knights-club`. Portuguese (Brazil) by default, with a PT / EN toggle in the header (phones: next to the menu). Built 27 Nov 2026. No build step: plain HTML, CSS and JS, so it runs on GitHub Pages as is.
 
 ## Run it
 ```

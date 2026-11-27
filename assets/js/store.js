@@ -62,11 +62,11 @@
   /* ---------------- Layout ---------------- */
   const page = document.body.dataset.page;
   const navLinks = [
-    ["shop.html", t("nav.all"), "all"],
-    ["shop.html?c=tees", t("nav.tees"), "tees"],
-    ["shop.html?c=hoodies", t("nav.hoodies"), "hoodies"],
-    ["shop.html?c=headwear", t("nav.headwear"), "headwear"],
-    ["index.html#knights-club", t("nav.club"), "club"]
+    ["#shop", t("nav.all"), "all"],
+    ["#tees", t("nav.tees"), "tees"],
+    ["#hoodies", t("nav.hoodies"), "hoodies"],
+    ["#headwear", t("nav.headwear"), "headwear"],
+    ["#knights-club", t("nav.club"), "club"]
   ];
   const currentC = new URLSearchParams(location.search).get("c") || "all";
 
@@ -85,7 +85,7 @@
       <div class="wrap">
         <span>${t("announce.ship", { amt: money(S.freeShippingFrom) })}</span>
         <span class="dot hide-sm" aria-hidden="true"></span>
-        <span class="hide-sm">${t("announce.drop")} <a href="shop.html">${t("announce.cta")}</a></span>
+        <span class="hide-sm">${t("announce.drop")} <a href="#shop">${t("announce.cta")}</a></span>
       </div>
     </div>
     <header class="site-header">
@@ -95,7 +95,7 @@
           <button class="icon-btn" type="button" aria-label="${t("aria.menuOpen")}" data-open-menu>${ICON.menu}</button>
           <button class="lang-mini" type="button" data-lang="${lang === "pt" ? "en" : "pt"}" aria-label="${t("lang.switch")}" lang="${lang === "pt" ? "en" : "pt-BR"}">${lang === "pt" ? "EN" : "PT"}</button>
         </div>
-        <a class="brand" href="index.html" aria-label="${t("aria.home")}"><img src="assets/img/brand/logo-white.webp" alt="Sir Betalot" width="90" height="46"></a>
+        <a class="brand" href="#main" aria-label="${t("aria.home")}"><img src="assets/img/brand/logo-white.webp" alt="Sir Betalot" width="90" height="46"></a>
         <div class="header-tools">
           ${langToggle(" lang-header")}
           <button class="icon-btn" type="button" aria-label="${t("aria.search")}" data-open-search>${ICON.search}</button>
@@ -134,10 +134,10 @@
           <div>
             <h3>${t("footer.shop")}</h3>
             <ul>
-              <li><a href="shop.html">${t("nav.all")}</a></li>
-              <li><a href="shop.html?c=tees">${t("nav.tees")}</a></li>
-              <li><a href="shop.html?c=hoodies">${t("nav.hoodies")}</a></li>
-              <li><a href="shop.html?c=headwear">${t("nav.headwear")}</a></li>
+              <li><a href="#shop">${t("nav.all")}</a></li>
+              <li><a href="#tees">${t("nav.tees")}</a></li>
+              <li><a href="#hoodies">${t("nav.hoodies")}</a></li>
+              <li><a href="#headwear">${t("nav.headwear")}</a></li>
             </ul>
           </div>
           <div>
@@ -152,7 +152,7 @@
           <div>
             <h3>${t("footer.about")}</h3>
             <ul>
-              <li><a href="index.html#knights-club">Knights Club</a></li>
+              <li><a href="#knights-club">Knights Club</a></li>
               <li><a href="#" data-info="care">${t("footer.care")}</a></li>
               <li><a href="#" data-info="terms">${t("footer.terms")}</a></li>
               <li><a href="#" data-info="privacy">${t("footer.privacy")}</a></li>
@@ -229,7 +229,7 @@
   const cartEl = $("#cart"), searchEl = $("#search"), menuEl = $("#mobile-nav");
   const openCart = () => openLayer(cartEl);
   document.addEventListener("click", (e) => {
-    const tg = e.target.closest("[data-lang],[data-open-cart],[data-close-cart],[data-open-search],[data-close-search],[data-open-menu],[data-close-menu],[data-sizeguide],[data-close-dialog],[data-info],[data-account],[data-checkout],[data-qty],[data-remove],[data-quick]");
+    const tg = e.target.closest("[data-lang],[data-open-cart],[data-close-cart],[data-open-search],[data-close-search],[data-open-menu],[data-close-menu],[data-sizeguide],[data-close-dialog],[data-info],[data-account],[data-checkout],[data-qty],[data-remove],[data-add]");
     if (!tg) return;
     if (tg.matches("[data-lang]")) setLang(tg.dataset.lang);
     else if (tg.matches("[data-open-cart]")) openCart();
@@ -251,13 +251,18 @@
     else if (tg.matches("[data-checkout]")) toast(t("toast.checkout"));
     else if (tg.matches("[data-qty]")) cart.set(+tg.dataset.idx, cart.items[+tg.dataset.idx].qty + (+tg.dataset.qty));
     else if (tg.matches("[data-remove]")) cart.set(+tg.dataset.idx, 0);
-    else if (tg.matches("[data-quick]")) {
-      e.preventDefault();
-      const p = byId(tg.dataset.quick);
-      const sizes = Object.keys(p.sizes);
-      if (sizes.length === 1) { cart.add(p.id, sizes[0]); toast(t("toast.added", { name: P(p, "name") })); openCart(); }
-      else location.href = `product.html?p=${p.id}`;
+    else if (tg.matches("[data-add]")) {
+      const p = byId(tg.dataset.add), size = tg.dataset.size, one = Object.keys(p.sizes).length === 1;
+      cart.add(p.id, size);
+      toast(t("toast.added", { name: one ? P(p, "name") : `${P(p, "name")} (${sizeLabel(size)})` }));
+      openCart();
     }
+  });
+  // In-page links inside the cart, search or menu panels close the panel first.
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    const layer = a && [cartEl, searchEl, menuEl].find((el) => el.contains(a) && el.classList.contains("open"));
+    if (layer) closeLayer(layer);
   });
   document.addEventListener("submit", (e) => {
     if (e.target.id !== "contact-form") return;
@@ -281,15 +286,15 @@
       `<div class="track"><div class="fill" style="width:${Math.min(100, (sub / S.freeShippingFrom) * 100)}%"></div></div>`;
     const lines = $(".lines", cartEl), foot = $(".drawer-foot", cartEl);
     if (!cart.items.length) {
-      lines.innerHTML = `<div class="empty"><img src="assets/img/brand/knight-head.webp" alt="" width="120" height="129"><p>${t("cart.empty")}</p><a class="btn btn-primary" href="shop.html">${t("cart.shop")}</a></div>`;
+      lines.innerHTML = `<div class="empty"><img src="assets/img/brand/knight-head.webp" alt="" width="120" height="129"><p>${t("cart.empty")}</p><a class="btn btn-primary" href="#shop">${t("cart.shop")}</a></div>`;
       foot.hidden = true; return;
     }
     foot.hidden = false;
     lines.innerHTML = cart.items.map((i, idx) => {
       const p = byId(i.id), name = esc(P(p, "name"));
       return `<div class="line">
-        <a href="product.html?p=${p.id}"><img src="${IMG + p.images[0]}" alt="${name}" width="84" height="105"></a>
-        <div><a class="line-title" href="product.html?p=${p.id}">${name}</a>
+        <a href="#p-${p.id}"><img src="${IMG + p.images[0]}" alt="${name}" width="84" height="105"></a>
+        <div><a class="line-title" href="#p-${p.id}">${name}</a>
           <div class="line-meta">${esc(P(p, "color"))} / ${esc(sizeLabel(i.size))}</div>
           <div class="mini-qty"><button type="button" data-qty="-1" data-idx="${idx}" aria-label="${t("cart.dec")}">&minus;</button><span aria-label="${t("cart.qty")}">${i.qty}</span><button type="button" data-qty="1" data-idx="${idx}" aria-label="${t("cart.inc")}">+</button></div>
         </div>
@@ -307,7 +312,7 @@
     q = q.trim().toLowerCase();
     const hits = S.products.filter((p) => !q || [p.name, p.color, p.collection, p.short, p.pt?.name, p.pt?.color, p.pt?.short].join(" ").toLowerCase().includes(q));
     $(".search-results", searchEl).innerHTML = hits.length
-      ? hits.map((p) => `<a href="product.html?p=${p.id}"><img src="${IMG + p.images[0]}" alt="" loading="lazy" width="150" height="188"><span>${esc(P(p, "name"))}</span><b>${money(p.price)}</b></a>`).join("")
+      ? hits.map((p) => `<a href="#p-${p.id}"><img src="${IMG + p.images[0]}" alt="" loading="lazy" width="150" height="188"><span>${esc(P(p, "name"))}</span><b>${money(p.price)}</b></a>`).join("")
       : `<p style="color:var(--muted)">${esc(t("search.none", { q }))}</p>`;
   }
   $("#q").addEventListener("input", (e) => runSearch(e.target.value));
@@ -325,19 +330,23 @@
     return p.compareAt ? `<span class="now-sale">${money(p.price)}</span><s>${money(p.compareAt)}</s><span class="sr-only">${t("price.sale")}</span>` : `<span>${money(p.price)}</span>`;
   }
   function card(p, eager) {
-    const one = Object.keys(p.sizes).length === 1;
+    const sizes = Object.entries(p.sizes), one = sizes.length === 1;
     const name = esc(P(p, "name")), color = esc(P(p, "color"));
-    return `<article class="card">
-      <a class="card-media" href="product.html?p=${p.id}" aria-label="${name}, ${color}">
+    const buy = one
+      ? `<button class="btn btn-primary card-add" type="button" data-add="${p.id}" data-size="${esc(sizes[0][0])}" ${sizes[0][1] ? "" : "disabled"}>${sizes[0][1] ? t("card.add") : t("badge.sold")}</button>`
+      : `<div class="card-sizes" role="group" aria-label="${t("pdp.size")} ${name}">${sizes.map(([s, n]) =>
+          `<button class="size" type="button" data-add="${p.id}" data-size="${esc(s)}" ${n ? "" : "disabled"} aria-label="${t("card.add")}: ${name}, ${esc(sizeLabel(s))}${n ? "" : ` (${t("pdp.soldout")})`}">${esc(sizeLabel(s))}</button>`).join("")}</div>`;
+    return `<article class="card" id="p-${p.id}">
+      <div class="card-media">
         ${badgeFor(p)}
         <img class="main" src="${IMG + p.images[0]}" alt="${t("card.in", { name, color })}" width="800" height="1000" ${eager ? "" : 'loading="lazy"'}>
         <img class="alt" src="${IMG + p.images[p.images.length - 1]}" alt="" width="800" height="1000" loading="lazy">
-      </a>
-      <button class="btn btn-primary quick-add" type="button" data-quick="${p.id}">${one ? t("card.add") : t("card.choose")}</button>
+      </div>
       <div class="card-body">
-        <a class="card-title" href="product.html?p=${p.id}">${name}</a>
+        <h3 class="card-title">${name}</h3>
         <div class="card-meta"><span class="swatch" style="background:${p.swatch}" aria-hidden="true"></span>${color}</div>
         <div class="price">${priceHtml(p)}</div>
+        ${buy}
       </div>
     </article>`;
   }
@@ -346,8 +355,26 @@
   if (page === "home") {
     document.title = t("meta.home");
     $('meta[name="description"]')?.setAttribute("content", t("meta.desc"));
-    const best = ["royal-crest-hoodie", "crown-logo-tee", "midnight-knight-zip-hoodie", "knights-club-vintage-tee"].map(byId);
-    $("#best").innerHTML = best.map((p, i) => card(p, i < 2)).join("");
+    const grid = $("#best"), chipBox = $("#chips");
+    const chips = [["all", t("shop.chipAll")], ...S.collections.map((c) => [c.id, P(c, "name")])];
+    let active = "all";
+    const draw = () => {
+      chipBox.innerHTML = chips.map(([id, n]) => `<button class="chip" type="button" data-chip="${id}" aria-pressed="${id === active}">${n}</button>`).join("");
+      grid.innerHTML = S.products.filter((p) => active === "all" || p.collection === active).map((p, i) => card(p, i < 2)).join("");
+    };
+    chipBox.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-chip]"); if (!b) return;
+      active = b.dataset.chip; draw();
+    });
+    // #tees / #hoodies / #headwear filter the shop; #p-<id> jumps to a product card.
+    const fromHash = () => {
+      const h = decodeURIComponent(location.hash.slice(1));
+      if (S.collections.some((c) => c.id === h)) { active = h; draw(); $("#shop").scrollIntoView(); }
+      else if (h === "shop" && active !== "all") { active = "all"; draw(); }
+      else if (h.startsWith("p-") && !document.getElementById(h)) { active = "all"; draw(); document.getElementById(h)?.scrollIntoView(); }
+    };
+    window.addEventListener("hashchange", fromHash);
+    draw(); fromHash();
     $$("[data-product-name]").forEach((el) => { el.textContent = P(byId(el.dataset.productName), "name"); });
     const nl = $("#newsletter");
     nl?.addEventListener("submit", (e) => {
@@ -357,125 +384,5 @@
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { note.textContent = t("home.nlErr"); note.className = "form-note"; $("#nl-email").focus(); return; }
       note.textContent = t("home.nlOk"); note.className = "form-note ok"; nl.reset();
     });
-  }
-
-  /* ---------------- Page: shop ---------------- */
-  if (page === "shop") {
-    const chips = [["all", t("shop.chipAll")], ...S.collections.map((c) => [c.id, P(c, "name")])];
-    let active = S.collections.some((c) => c.id === currentC) ? currentC : "all";
-    const heading = () => {
-      const c = S.collections.find((x) => x.id === active);
-      $("#shop-title").textContent = colName(c);
-      $("#shop-blurb").textContent = colBlurb(c);
-      $("#crumb-here").textContent = colName(c);
-      document.title = `${colName(c)} | ${t("meta.suffix")}`;
-    };
-    const chipBox = $("#chips");
-    const draw = () => {
-      chipBox.innerHTML = chips.map(([id, n]) => `<button class="chip" type="button" data-chip="${id}" aria-pressed="${id === active}">${n}</button>`).join("");
-      let list = S.products.filter((p) => active === "all" || p.collection === active);
-      const sort = $("#sort").value;
-      if (sort === "low") list = [...list].sort((a, b) => a.price - b.price);
-      if (sort === "high") list = [...list].sort((a, b) => b.price - a.price);
-      if (sort === "new") list = [...list].sort((a, b) => (b.badge === "New") - (a.badge === "New"));
-      $("#grid").innerHTML = list.map((p, i) => card(p, i < 3)).join("");
-      $("#count").textContent = list.length === 1 ? t("shop.count1") : t("shop.countN", { n: list.length });
-    };
-    chipBox.addEventListener("click", (e) => {
-      const b = e.target.closest("[data-chip]"); if (!b) return;
-      active = b.dataset.chip;
-      const href = active === "all" ? "shop.html" : `shop.html?c=${active}`;
-      history.replaceState(null, "", href);
-      $$(".nav a").forEach((a) => a.toggleAttribute("aria-current", a.getAttribute("href") === href));
-      heading(); draw();
-    });
-    $("#sort").addEventListener("change", draw);
-    heading(); draw();
-  }
-
-  /* ---------------- Page: product ---------------- */
-  if (page === "product") {
-    const p = byId(new URLSearchParams(location.search).get("p")) || S.products[0];
-    const name = P(p, "name"), color = P(p, "color");
-    document.title = `${name} | ${t("meta.suffix")}`;
-    const sizes = Object.entries(p.sizes);
-    const one = sizes.length === 1;
-    let sel = one ? sizes[0][0] : null;
-    let img = 0;
-    const col = S.collections.find((c) => c.id === p.collection);
-    const eyebrow = p.compareAt ? t("pdp.sale") : p.badge === "New" ? t("badge.new") : p.badge === "Low Stock" ? t("badge.low") : p.badge === "Best Seller" ? t("badge.best") : "";
-    $("#pdp").innerHTML = `
-      <div class="gallery">
-        <div class="thumbs" role="group" aria-label="${t("pdp.images")}">
-          ${p.images.map((f, i) => `<button type="button" data-img="${i}" aria-label="${t("pdp.show", { n: i + 1 })}" aria-current="${i === 0}"><img src="${IMG + f}" alt="" width="84" height="105"></button>`).join("")}
-        </div>
-        <div class="stage">
-          <img id="stage-img" src="${IMG + p.images[0]}" alt="${esc(t("pdp.imgAlt", { name, color, i: 1, n: p.images.length }))}" width="1200" height="1500">
-          <div class="stage-nav"><button type="button" data-step="-1" aria-label="${t("pdp.prev")}">${ICON.left}</button><button type="button" data-step="1" aria-label="${t("pdp.next")}">${ICON.right}</button></div>
-        </div>
-      </div>
-      <div class="buy">
-        <nav class="crumbs" aria-label="${t("crumb.label")}"><a href="index.html">${t("crumb.home")}</a><span aria-hidden="true">/</span><a href="shop.html?c=${p.collection}">${esc(colName(col))}</a></nav>
-        ${eyebrow ? `<span class="eyebrow">${eyebrow}</span>` : ""}
-        <h1 class="display">${esc(name)}</h1>
-        <div class="price">${priceHtml(p)}</div>
-        <div class="tax">${t("pdp.tax")}</div>
-        <p class="lead">${esc(P(p, "short"))}</p>
-        <div class="opt"><div class="opt-head"><span><b>${t("pdp.colour")}</b> ${esc(color)}</span></div>
-          <div class="sizes"><span class="swatch" style="width:32px;height:32px;background:${p.swatch};box-shadow:0 0 0 2px var(--sba-night),0 0 0 4px var(--sba-gold)" aria-hidden="true"></span></div></div>
-        <div class="opt">
-          <div class="opt-head"><span><b>${t("pdp.size")}</b> <span id="size-label">${one ? sizeLabel(sel) : t("pdp.select")}</span></span>${one ? "" : `<a class="link" href="#" data-sizeguide>${t("footer.sizeguide")}</a>`}</div>
-          <div class="sizes" role="group" aria-label="${t("pdp.sizeGroup")}">
-            ${sizes.map(([s, n]) => `<button class="size" type="button" data-size="${s}" aria-pressed="${s === sel}" ${n ? "" : "disabled"} aria-label="${sizeLabel(s)}${n ? "" : ", " + t("pdp.soldout")}">${sizeLabel(s)}</button>`).join("")}
-          </div>
-          <div class="stock" id="stock" aria-live="polite"></div>
-        </div>
-        <div class="buy-row">
-          <div class="qty"><button type="button" data-step-qty="-1" aria-label="${t("cart.dec")}">&minus;</button><label class="sr-only" for="qty">${t("cart.qty")}</label><input id="qty" type="number" inputmode="numeric" min="1" value="1"><button type="button" data-step-qty="1" aria-label="${t("cart.inc")}">+</button></div>
-          <button class="btn btn-primary" id="add" type="button"></button>
-        </div>
-        <div class="assure">
-          <div>${ICON.truck}${t("pdp.assure1", { amt: money(S.freeShippingFrom) })}</div>
-          <div>${ICON.returns}${t("pdp.assure2")}</div>
-          <div>${ICON.lock}${t("pdp.assure3")}</div>
-        </div>
-        <details class="acc" open><summary>${t("pdp.details")}</summary><div class="acc-body"><ul>${P(p, "details").map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div></details>
-        <details class="acc"><summary>${t("pdp.fit")}</summary><div class="acc-body"><p style="margin:0">${esc(P(p, "fit"))}</p></div></details>
-        <details class="acc"><summary>${t("pdp.care")}</summary><div class="acc-body"><p style="margin:0">${t("pdp.careBody")}</p></div></details>
-        <details class="acc"><summary>${t("pdp.shipping")}</summary><div class="acc-body"><p style="margin:0">${t("pdp.shippingBody", { free: money(S.freeShippingFrom), flat: money(S.flatShipping) })}</p></div></details>
-      </div>`;
-
-    const stage = $("#stage-img"), add = $("#add"), qty = $("#qty"), stock = $("#stock");
-    const show = (i) => {
-      img = (i + p.images.length) % p.images.length;
-      stage.src = IMG + p.images[img];
-      stage.alt = t("pdp.imgAlt", { name, color, i: img + 1, n: p.images.length });
-      $$(".thumbs button").forEach((b, k) => b.setAttribute("aria-current", k === img));
-    };
-    const update = () => {
-      const n = sel ? p.sizes[sel] : 0;
-      add.disabled = !sel;
-      add.textContent = sel ? t("pdp.add", { amt: money(p.price * Math.max(1, +qty.value || 1)) }) : t("pdp.select");
-      stock.className = "stock" + (sel && n <= 5 ? " low" : "");
-      stock.textContent = !sel ? "" : n <= 5 ? t("pdp.only", { n, size: sizeLabel(sel) }) : t("pdp.instock");
-      qty.max = n || 1;
-      if (+qty.value > n && n) qty.value = n;
-    };
-    $("#pdp").addEventListener("click", (e) => {
-      const tg = e.target.closest("[data-img],[data-step],[data-size],[data-step-qty]"); if (!tg) return;
-      if (tg.dataset.img) show(+tg.dataset.img);
-      else if (tg.dataset.step) show(img + +tg.dataset.step);
-      else if (tg.dataset.size) { sel = tg.dataset.size; $$(".size").forEach((b) => b.setAttribute("aria-pressed", b === tg)); $("#size-label").textContent = sizeLabel(sel); update(); }
-      else if (tg.dataset.stepQty) { qty.value = Math.max(1, Math.min(+qty.max || 99, (+qty.value || 1) + +tg.dataset.stepQty)); update(); }
-    });
-    qty.addEventListener("input", update);
-    add.addEventListener("click", () => {
-      if (!sel) return;
-      cart.add(p.id, sel, Math.max(1, +qty.value || 1));
-      toast(t("toast.added", { name: `${name} (${sizeLabel(sel)})` }));
-      openCart();
-    });
-    update();
-    $("#related").innerHTML = S.products.filter((x) => x.id !== p.id).sort((a, b) => (a.collection !== p.collection) - (b.collection !== p.collection)).slice(0, 4).map((x) => card(x)).join("");
   }
 })();
